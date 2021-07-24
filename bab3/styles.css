@@ -1,0 +1,12 @@
+.wrapper {
+  background: red;
+}
+
+.container {
+  background: blue;
+  width: 1200px;
+  margin: auto;
+  padding-right: 10px;
+  padding-left: 10px;
+  height: 100px;
+}
