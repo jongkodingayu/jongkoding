@@ -2,6 +2,9 @@
 
 require_once("connection.php");
 
+//mengecek dan mendapatkan SESSION
+require_once("session_check.php");
+
 $query = "SELECT * FROM siswa";
 $result = mysqli_query($mysqli, $query);
 ?>
@@ -45,8 +48,19 @@ $result = mysqli_query($mysqli, $query);
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Daftar Siswa</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Daftar Siswa</a>
                     </li>
+
+                    <?php if ($sessionStatus == false) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="login.php">Login Petugas</a>
+                        </li>
+                    <?php else : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="logout.php">Logout</a>
+                        </li>
+
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -54,40 +68,43 @@ $result = mysqli_query($mysqli, $query);
 
     <div id="student-list">
         <div class="container">
-            <div class="row mb-4 mt-4">
-                <div class="col">
-                    <h2>Daftar Siswa</h2>
+
+            <?php if ($sessionStatus) : ?>
+
+                <div class="row mb-4 mt-4">
+                    <div class="col">
+                        <h2>Daftar Siswa</h2>
+                    </div>
+
+                    <div class="col text-end">
+                        <a class="btn btn-primary" href="form_siswa.php" role="button">Tambah Siswa</a>
+                    </div>
                 </div>
 
-                <div class="col text-end">
-                    <a class="btn btn-primary" href="form_siswa.php" role="button">Tambah Siswa</a>
-                </div>
-            </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Jenis Kelamin</th>
+                                    <th scope="col">Alamat</th>
+                                    <th scope="col">Usia</th>
+                                    <th scope="col">Telepon</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 1;
+                                foreach ($result as $siswa) {
+                                    $tglLahir = explode("-", $siswa["tgl_lahir"]);
+                                    $tahunSekarang = date("Y");
 
-            <div class="row">
-                <div class="col">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Jenis Kelamin</th>
-                                <th scope="col">Alamat</th>
-                                <th scope="col">Usia</th>
-                                <th scope="col">Telepon</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $i = 0;
-                            foreach ($result as $siswa) {
-                                $tglLahir = explode("-", $siswa["tgl_lahir"]);
-                                $tahunSekarang = date("Y");
+                                    $selisihTahun = $tahunSekarang - $tglLahir[0];
 
-                                $selisihTahun = $tahunSekarang - $tglLahir[0];
-
-                                echo '<tr>
+                                    echo '<tr>
                                 <th scope="row">' . $i++ . '</th>
                                 <td>' . $siswa["nama"] . '</td>
                                 <td>' . $siswa["jk"] . '</td>
@@ -99,12 +116,22 @@ $result = mysqli_query($mysqli, $query);
                                 <a href="delete.php?nis=' . $siswa['nis'] . '" onclick="return confirm_delete()">Delete</a>
                                 </td>
                             </tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+
+            <?php else : ?>
+                <div class="row">
+                    <div class="col">
+                        <h2>Login terlebih dahulu!</h2>
+                    </div>
+                </div>
+
+            <?php endif; ?>
+
         </div>
     </div>
 </body>
