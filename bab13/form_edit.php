@@ -15,6 +15,7 @@ $query = "SELECT * FROM siswa WHERE nis='{$nis}'";
 $result = mysqli_query($mysqli, $query);
 
 foreach ($result as $siswa) {
+    $foto = $siswa['foto'];
     $nis = $siswa['nis'];
     $name = $siswa['nama'];
     $address = $siswa['alamat'];
@@ -76,7 +77,21 @@ foreach ($result as $siswa) {
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col colom col-8 p-4 bg-light">
-                    <form action="action_edit.php" method="POST">
+                    <form action="action_edit.php" method="POST" enctype="multipart/form-data">
+
+                        <?php if (!is_null($foto) && !empty($foto)) : ?>
+                            <div class="form-group mb-2">
+                                <img src="<?= $foto ?>" class="preview" />
+
+                                <a href="hapus_foto.php?nis=<?= $nis ?>">Hapus Foto</a>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="form-group mb-2">
+                            <label for="foto">Foto</label>
+                            <input id="foto" class="form-control" type="file" name="foto" />
+                        </div>
+
 
                         <div class="form-group mb-2">
                             <label for="nis">NIS</label>

@@ -17,6 +17,7 @@ $result = mysqli_query($mysqli, $query);
 
 //fetching data
 foreach ($result as $siswa) {
+    $foto = $siswa['foto'];
     $name = $siswa['nama'];
     $gender = $siswa['jk'];
     $address = $siswa['alamat'];
@@ -40,6 +41,30 @@ if (isset($_POST['dateOfBirth'])) $dateOfBirth = $_POST['dateOfBirth'];
 
 if (isset($_POST['phone'])) $phone = $_POST['phone'];
 
+//mengambil data file upload
+$files = $_FILES['foto'];
+$path = "penyimpanan/";
+
+//menangani file upload 
+if (!empty($files['name'])) {
+    $filepath = $path . $files['name'];
+
+    $upload = move_uploaded_file($files['tmp_name'], $filepath);
+
+    if ($upload) {
+        unlink($foto);
+    }
+} else {
+    $filepath = '';
+    $upload = false;
+}
+
+//menangani error saat mengupload
+if ($upload != true && $filepath != $foto) {
+    exit("Gagal Mengupload File <a href='form_edit.php?nis={$nis}'>Kembali</a>");
+}
+
+
 //menyiapkan query untuk diekseskusi
 $query = "
 UPDATE siswa SET
@@ -48,7 +73,8 @@ jk='{$gender}',
 alamat='{$address}',
 tmp_lahir='{$placeOfBirth}',
 tgl_lahir='{$dateOfBirth}',
-telepon='{$phone}'
+telepon='{$phone}',
+foto = '{$filepath}'
 WHERE nis = '{$nis}'
     ";
 

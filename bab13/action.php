@@ -34,12 +34,30 @@ if ($error == 1) {
     exit();
 }
 
+//mengambil data file upload
+$files = $_FILES['foto'];
+$path = "penyimpanan/";
+
+//menangani file upload
+if (!empty($files['name'])) {
+    $filepath = $path . $files['name'];
+    $upload = move_uploaded_file($files['tmp_name'], $filepath);
+} else {
+    $filepath = '';
+    $upload = false;
+}
+
+// menangani error saat mengupload
+if ($upload != true && $filepath != '') {
+    exit("Gagal mengupload file  <a href='form_siswa.php'>Kembali</a>");
+}
+
 //menyiapkan query MySQL untuk dieksekusi
 $query = "
 INSERT INTO siswa
-(nis, nama, jk, alamat, tmp_lahir, tgl_lahir, telepon, id_jurusan)
+(nis, nama, jk, alamat, tmp_lahir, tgl_lahir, telepon, id_jurusan, foto)
 VALUES
-('{$nis}','{$name}','{$gender}','{$address}','{$placeOfBirth}','{$dateOfBirth}','{$phone}',0);";
+('{$nis}','{$name}','{$gender}','{$address}','{$placeOfBirth}','{$dateOfBirth}','{$phone}',0, '{$filepath}');";
 
 
 //mengeksekusi MySQL query

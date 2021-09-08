@@ -1,3 +1,16 @@
 .navbar-brand img {
   max-height: 80px !important;
 }
+
+table img {
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: aliceblue;
+}
+
+.preview {
+  height: 120px;
+  width: auto;
+}

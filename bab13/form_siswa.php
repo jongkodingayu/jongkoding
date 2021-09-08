@@ -51,7 +51,12 @@ if ($sessionStatus == false) {
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col colom col-8 p-4 bg-light">
-                    <form action="action.php" method="POST">
+                    <form action="action.php" method="POST" enctype="multipart/form-data">
+
+                        <div class="form-group mb-2">
+                            <label for="foto">Foto</label>
+                            <input id="foto" class="form-control" type="file" name="foto" />
+                        </div>
 
                         <div class="form-group mb-2">
                             <label for="nis">NIS</label>

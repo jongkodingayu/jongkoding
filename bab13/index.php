@@ -87,6 +87,7 @@ $result = mysqli_query($mysqli, $query);
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Foto</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Jenis Kelamin</th>
                                     <th scope="col">Alamat</th>
@@ -104,8 +105,13 @@ $result = mysqli_query($mysqli, $query);
 
                                     $selisihTahun = $tahunSekarang - $tglLahir[0];
 
+                                    if ($siswa['foto'] == null || empty($siswa['foto'])) {
+                                        $siswa['foto'] = 'penyimpanan/default.jpg';
+                                    }
+
                                     echo '<tr>
                                 <th scope="row">' . $i++ . '</th>
+                                <td><img src = "' . $siswa['foto'] . '"/></td>
                                 <td>' . $siswa["nama"] . '</td>
                                 <td>' . $siswa["jk"] . '</td>
                                 <td>' . $siswa["alamat"] . '</td>
