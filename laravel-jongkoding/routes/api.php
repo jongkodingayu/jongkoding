@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::prefix('siswa')->group(function () {
+    Route::post('/store', [SiswaController::class, 'store']);
+    Route::post('/update/{id}', [SiswaController::class, 'update']);
+    Route::get('/delete/{id}', [SiswaController::class, 'destroy']);
 });
